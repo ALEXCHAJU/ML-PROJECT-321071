@@ -41,7 +41,8 @@ First of all, we had to explore the dataset performing exploratory data analysis
 
 Below, as shown in figure 1, we can see a barplot displaying the number of images per subcategories for a sample of 50 observations.
 
-![figure_1](./figure1.png)
+![figure_1](images/figure1.png)
+**figure 1**
 
 In figure 1, the sample of 50 observations is made up of the 10 subcategories with the highest number of images within their folder and the 10 lowest. The remaining 30 observations were randomly selected from the sample without replacement.
 
@@ -117,10 +118,10 @@ We trained and evaluated all three models described above, and below we report t
 
 We observe: CNN achieved the best accuracy and F1 score, logistic regression was the second best performer after CNN, while ANN was the model that performed the worst. We attribute the lower accuracy of ANN due to model complexity. Our ANN has 658,665 trainable parameters and the dataset contains only 150 samples, and so this means that the model is more complex than the data. The logistic regression model is simpler and has less parameters, so it is learns better.
 
-![figure 2-3](.\figure2-3.png)
+![figure 2-3](images/figure2-3.png)
 **figure 2-3**
 
-Further analysis based on figure 2 and 3:
+Further analysis based on figure 2-3:
 * The CNN reaches about 19.6% accuracy and shows steady improvements in its learning curves, but the validation accuracy consistently is above the training accuracy, which is expected when augmentation is applied only to the training data or when the training images are simply harder than those in the validation split.
 * The ANN remains extremely low at around 1.2% accuracy, and its validation accuracy also exceeds its training accuracy, reinforcing that the model is not learning effectively and that the training data is likely more challenging due to augmentation or more likely the ANN i.
 * Logistic Regression reaches about 9.7 percent accuracy and still performs better than the ANN even though both use raw pixel inputs. This happens because Logistic Regression applies a single linear decision boundary across all pixel values at once, which can sometimes pick up simple global patterns like overall brightness or silhouette shape. The ANN, on the other hand, must learn these patterns through multiple layers and weights, and without convolution it struggles to detect spatial structure in images. As a result the ANN becomes overwhelmed by the high dimensional input, while Logistic Regression remains simpler and more stable, allowing it to perform slightly better on this type of data.
@@ -129,14 +130,14 @@ Afterwards, we extracted the feature vectors from the CNN. These vectors were th
 
 The key idea here is to inspect whether classes with similar visual properties are grouped together. This allows us to explore potential semantic relationships between labels that were originally separated in the directory structure.
 
-![figure 4](.\figure4.png)
+![figure 4](images/figure4.png)
 **figure 4**
 
 To determine the number of clusters to use with the clustering method, we used the elbow method and the silhouette method, to estimate how many clusters are appropriate for the feature vectors extracted from the CNN. The elbow method measures how the within cluster inertia decreases as the number of clusters increases, and it looks for a point where improvements slow down. The silhouette method evaluates how well samples fit within their assigned clusters compared to other clusters. These two perspectives help avoid choosing a number of clusters that is either too small or unnecessarily large. The meaning of this section depends on the shapes of the generated plots and the silhouette scores printed by the code.
 
-![figure 5](.\figure5.jpeg)
+![figure 5](images/figure5.jpeg)
 **figure 5**
-![figure 6](.\figure6.jpeg)
+![figure 6](images/figure6.jpeg)
 **figure 6**
 
 We first applied the elbow method, but as shown above from the graph displaying the curve to apply the elbow method in figure 5, the exact position of the elbow is not clear. Therefore we tried applying the silhouette method, and the optimal number of clusters we found was k=2. 
@@ -149,12 +150,13 @@ For each cluster, the code looks at which classes appear inside it based on whet
 
 To understand the relationship between classes within each cluster, we manually found the main theme of each cluster. Moreover, for each cluster, we have created micro-themes. All of this was done manually by looking at the semantic relationship of the classes. As an example, as illustrated by the figure 7 below, we can see the title represents the theme of cluster 0, where natural, animals and diverse objects is the theme of the cluster and we can find examples of micro-themes such as animal and wildlife, which is the prominent micro-theme within this category. To clarify, as an example, the animal and wildlife micro-theme was manually created by looking at all the semantic fields related to animals within that cluster. For instance in the latter micro-theme leopards, zebra, porcupine and elk were just a few examples that were included.
 
-![figure 7](.\figure7.jpeg)
+![figure 7](images/figure7.jpeg)
 **figure 7**
 
 ### Conclusions
 The goals of this project of building classification models and uncovering semantic relationships between classes were achieved. Unfortunately, due to time limitations, the metrics have not reached the best results. However, we were still able to interestingly notice the strengths and weaknesses of the models. Moreover, it was extremely engaging and interesting to see that there were semantic relationships from our clustering analysis such as the animals example we made, despite the low raw accuracy of our models.
 
 More specifically, in this project we explored the dataset, balanced it, trained multiple models, evaluated their performances and conducted clustering analysis on learned features. Our main finding is that CNN outperforms ANN and logistic regression, confirming the advantage of spatial feature extraction when working with images. The semantic analysis further showed that certain classes naturally grouped together based on common features.
+
 
 Finally, the project leaves some opened questions. Not all clusters were perfectly interpretable, indicating that PCA with KMeans may not fully comprehend the structure of the dataset. Another limitation is related to class imbalance, which was addressed through data augmentation, but could still influence model behaviour and training and validation curves comparisons. Possible future improvements include trying different clustering algorithms and expanding the CNN architecture, increasing epochs. These approaches may provide deeper and more accurate insight into the semantic organisation of classes.
